@@ -33,5 +33,3 @@ function startPulsing(profile, start = 0){
 function stopPulsing(){
     running = false;
 }
-
-startPulsing(testProfile);
