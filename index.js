@@ -34,17 +34,87 @@ function stopPulsing(){
     running = false;
 }
 
-
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
-    return {
-        x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
-        y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+    let x = (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
+    let y = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
+    return { x: x, y: y, inBounds: (x > 0 && x < canvas.width && y > 0 && y < canvas.height)
     };
 }
 
-const canvas = document.getElementById('profileCanvas');
-const ctx = canvas.getContext('2d');
 
-ctx.fillStyle = 'green';
+const canvas = document.getElementById('profileCanvas');
+canvas.width  = 800; canvas.height = 400;
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = 'white';
 ctx.fillRect(0, 0, 800, 400);
+
+window.addEventListener("mousemove",(e)=>{mouseMove(e);})
+canvas.addEventListener("mousedown",(e)=>{mouseDown(e);})
+
+let mouseDownInCanvas = false;
+const chop = 10;
+let profile = Array(canvas.width/chop).fill(null);
+function mouseDown(e){
+    // let pos = getMousePos(canvas, e);
+    // let rpos = {x:Math.floor(pos.x / 10)*10,y:Math.floor(pos.y / 10)*10};
+    // profile[rpos.x/10] = rpos.y;
+    // ctx.fillStyle = 'white';
+    // ctx.fillRect(0, 0, 800, 400);  
+    // console.log(profile);
+    // profile.forEach((y,x) => {
+    //     if (y){
+    //         ctx.beginPath();
+    //         ctx.arc(x*10,y,3,0,2*Math.PI,false);
+    //         ctx.fillStyle = "black";
+    //         ctx.fill();
+    //     }
+    // });
+}
+
+function mouseMove(e){
+    let pos = getMousePos(canvas, e);
+    let changed = false;
+    if(pos.inBounds){
+        let rpos = {x:Math.floor(pos.x / chop)*chop,y:Math.floor(pos.y / chop)*chop};
+        changed = (profile[rpos.x/chop] != rpos.y);
+        if (changed){
+            profile[rpos.x/chop] = rpos.y;
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 800, 400);
+            profile.forEach((y,x) => {
+                if (y){
+                    ctx.beginPath();
+                    ctx.arc(x*chop,y,3,0,2*Math.PI,false);
+                    ctx.fillStyle = "black";
+                    ctx.fill();
+                }
+            });
+            ctx.beginPath();
+            ctx.moveTo(0,0);
+            profile.forEach((y,x) => {
+                if (y){
+                    ctx.lineTo(x*chop,y);
+                }
+            });
+            ctx.stroke();
+        }
+    }   
+}
+
+
+
+// let profile = {};
+// function draw(e) {
+//     let pos = getMousePos(canvas, e);
+//     profile[pos.x] = pos.y;
+    // ctx.fillStyle = 'white';
+//     ctx.moveTo(0,0);
+//     ctx.fillRect(0, 0, 800, 400);
+//     ctx.beginPath();
+//     for (const c in profile) {
+//         ctx.lineTo(c,profile[c]);
+//       }
+//     ctx.stroke();
+// }
+
