@@ -14,7 +14,7 @@
         <div class="flex justify-center items-center h-52">
             <div id = "pulsar" class="w-48 h-48 rounded-full"></div>
         </div>
-        <div class="grid-cols-2 grid-rows-1 w-48">
+        <div>
             <div onclick = "startPulsing(testProfile)" class="w-12 h-12 rounded-full bg-green-400 hover:bg-green-500 flex justify-center items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="white">
                     <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
@@ -25,6 +25,9 @@
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="white">
                     <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
                 </svg>
+            </div>
+            <div>
+                <canvas id = "profileCanvas" ></canvas>
             </div>
         </div>
     </div>
