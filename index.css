@@ -1,0 +1,25 @@
+:root{
+    --pulsingFG: #ff8585;
+    --pulsingBG: #503b28;
+}
+
+#pulsar{
+    background-color: var(--pulsingBG);
+}
+
+.pulse{
+    animation-duration: 0.12s;
+    animation-name: pulse;
+    animation-direction: alternate;
+    animation-iteration-count: 2;
+    -webkit-animation-timing-function: ease-out;
+}
+@keyframes pulse {
+    from {
+        background-color: var(--pulsingBG);
+    }
+  
+    to {
+        background-color: var(--pulsingFG);
+    }
+  }

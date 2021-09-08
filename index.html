@@ -6,13 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
-    <script src="index.js"></script>
+    <script src="index.js" defer></script>
     <title>PPG Spoofer</title>
 </head>
 <body class="bg-gray-100">
-    <div class="grid-rows-2">
-        <div>Hi</div>
-        <div>There</div>
+    <div class="grid-rows-2 h-screen">
+        <div class="flex justify-center items-center h-52">
+            <div id = "pulsar" class="w-48 h-48 rounded-full"></div>
+        </div>
+        <div class="grid-cols-2 grid-rows-1 w-48">
+            <div onclick = "startPulsing(testProfile)" class="w-12 h-12 rounded-full bg-green-400 hover:bg-green-500 flex justify-center items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="white">
+                    <path fill-rule="evenodd" d="M10.293 15.707a1 1 0 010-1.414L14.586 10l-4.293-4.293a1 1 0 111.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                    <path fill-rule="evenodd" d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                </svg> 
+            </div>
+            <div onclick = "stopPulsing()"class="w-12 h-12 rounded-full bg-red-400 hover:bg-red-500 flex justify-center items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="white">
+                    <path fill-rule="evenodd" d="M13.477 14.89A6 6 0 015.11 6.524l8.367 8.368zm1.414-1.414L6.524 5.11a6 6 0 018.367 8.367zM18 10a8 8 0 11-16 0 8 8 0 0116 0z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </div>
     </div>
 </body>
 </html>
