@@ -35,8 +35,16 @@ function stopPulsing(){
 
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
-    let x = (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width;
-    let y = (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height;
+    let cx = evt.clientX;
+    let cy = evt.clientY;
+    if (evt.type == "touchstart" || evt.type == "touchmove" || evt.type == "touchend"){
+        if(evt.touches.length > 0){
+            cx = evt.touches[0].clientX;
+            cy = evt.touches[0].clientY;
+        }
+    }
+    let x = (cx - rect.left) / (rect.right - rect.left) * canvas.width;
+    let y = (cy - rect.top) / (rect.bottom - rect.top) * canvas.height;
     return { x: x, y: y, inBounds: (x > 0 && x < canvas.width && y > 0 && y < canvas.height)
     };
 }
@@ -141,6 +149,7 @@ canvas.addEventListener('mousemove', (e)=>{
 });
 
 canvas.addEventListener('touchstart', (e)=>{
+    console.log(e);
     nodes.handleMouseDown(getMousePos(canvas, e));
 });
 canvas.addEventListener('touchend', (e)=>{
