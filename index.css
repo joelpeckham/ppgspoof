@@ -2,6 +2,12 @@
     --pulsingFG: #ff8585;
     --pulsingBG: #503b28;
 }
+html, body {
+    overflow-x: hidden;
+  }
+  body {
+    position: relative;
+  }
 
 #pulsar{
     background-color: var(--pulsingBG);
