@@ -22,8 +22,8 @@ html, body {
 }
 
 #profileCanvas{
-    width: 800px;
-    height: 400px;
+    width: 100vw;
+    height: 50vw;
 }
 @keyframes pulse {
     from {

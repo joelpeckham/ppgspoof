@@ -121,6 +121,7 @@ class Nodes {
 
 const canvas = document.getElementById('profileCanvas');
 let canvasSyle = window.getComputedStyle(canvas);
+console.log(canvasSyle.width);
 canvas.width  = parseInt(canvasSyle.width) * 2;
 canvas.height = parseInt(canvasSyle.height) * 2;
 const ctx = canvas.getContext('2d');
