@@ -51,16 +51,35 @@ function getMousePos(canvas, evt) {
 
 class Node{
     constructor(x,y,r=12){
-        this.x = x;
-        this.y = y;
+        this._x = x;
+        this._y = y;
         this.r = r;
+        this.clampedx = clamp(this.x,this.r,canvas.width-this.r)
     }
     draw(canvas, ctx){
         ctx.beginPath();
         ctx.fillStyle = "black";
-        ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+        ctx.arc(this.clampedx, this.y, this.r, 0, 2 * Math.PI);
         ctx.fill();
     }
+    set x(x){
+        this._x = x;
+        this.clampedx = clamp(x,this.r,canvas.width-this.r)
+    }
+    get x(){
+        return this._x;
+    }
+    set y(y){
+        this._y = clamp(y,this.r,canvas.height-this.r);
+    }
+    get y(){
+        return this._y;
+    }
+}
+
+//Clamp function takes interger value, mix, max and returns clamped output to fit in range.
+function clamp(value, min, max) {
+    return Math.min(Math.max(value, min), max);
 }
 
 class Nodes {
@@ -68,26 +87,33 @@ class Nodes {
         this.controlPoints = controlPoints;
         this.nodes = Array(controlPoints);
         for (let i = 0; i < controlPoints; i++) {
-            this.nodes[i] = new Node((canvas.width/(controlPoints-1))*i,canvas.height/2);
+            let r = 12;
+            this.nodes[i] = new Node((canvas.width/(controlPoints-1))*i,canvas.height/2,r);
         }
         console.log(this.nodes);
         this.canvas = canvas;
         this.ctx = ctx;
         this.dragging = -1;
-        this.draw();
+        this.drawProfile();
     }
-    draw(dots = true){
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    drawProfile(dots = true){
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (dots){
             for (const node of this.nodes) {
                 node.draw(this.canvas,this.ctx);
             }
         }
+        ctx.lineWidth = 5;
+        ctx.beginPath();
         ctx.moveTo(this.nodes[0].x,this.nodes[0].y);
         let points = [];
         for (const node of this.nodes) {
-            points.push(node.x);
+            if(dots){
+                points.push(node.clampedx);
+            }
+            else{
+                points.push(node.x);
+            }
             points.push(node.y);
         }
         ctx.curve(points);
@@ -112,17 +138,17 @@ class Nodes {
         if(nearest != -1){
             this.dragging = nearest;
         }
-        this.draw();
+        this.drawProfile();
     }
     handleMouseUp(pos){
         this.dragging = -1;
-        this.draw();
+        this.drawProfile();
     }
     handleMouseMove(pos){
         if(this.dragging != -1){
             this.nodes[this.dragging].y = pos.y;
         }
-        this.draw();
+        this.drawProfile();
     }
   }
 
@@ -133,10 +159,12 @@ console.log(canvasSyle.width);
 canvas.width  = parseInt(canvasSyle.width) * 2;
 canvas.height = parseInt(canvasSyle.height) * 2;
 const ctx = canvas.getContext('2d');
-ctx.fillStyle = 'white';
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+
+ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 let nodes = new Nodes(canvas,ctx);
+
 
 canvas.addEventListener('mousedown', (e)=>{
     nodes.handleMouseDown(getMousePos(canvas, e));
@@ -152,7 +180,7 @@ canvas.addEventListener('touchstart', (e)=>{
     console.log(e);
     nodes.handleMouseDown(getMousePos(canvas, e));
 });
-canvas.addEventListener('touchend', (e)=>{
+window.addEventListener('touchend', (e)=>{
     nodes.handleMouseUp(getMousePos(canvas, e));
 });
 canvas.addEventListener('touchmove', (e)=>{
@@ -161,13 +189,14 @@ canvas.addEventListener('touchmove', (e)=>{
 
 
 function extractProfileFromCanvas(ctx){
+    nodes.drawProfile(false);
     let profile = [];
     let imageData = ctx.getImageData(0,0,ctx.canvas.width,ctx.canvas.height);
     let data = imageData.data;
     for (let i = 0; i < ctx.canvas.width; i++) {
         let column = [];
         for (let j = 0; j < ctx.canvas.height; j++) {
-            if(data[(j*ctx.canvas.width+i)*4] != 255 || data[(j*ctx.canvas.width+i)*4+1] != 255 || data[(j*ctx.canvas.width+i)*4+2] != 255){
+            if(data[(j*ctx.canvas.width+i)*4+3] != 0 || j == ctx.canvas.height-1){
                 column.push(j);
                 break;
             }

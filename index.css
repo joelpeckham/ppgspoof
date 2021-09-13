@@ -25,6 +25,11 @@ html, body {
 #profileCanvas{
     width: 90vw;
     height: 45vw;
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
 }
 @keyframes pulse {
     from {
