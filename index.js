@@ -140,6 +140,16 @@ canvas.addEventListener('mousemove', (e)=>{
     nodes.handleMouseMove(getMousePos(canvas, e));
 });
 
+canvas.addEventListener('touchstart', (e)=>{
+    nodes.handleMouseDown(getMousePos(canvas, e));
+});
+canvas.addEventListener('touchend', (e)=>{
+    nodes.handleMouseUp(getMousePos(canvas, e));
+});
+canvas.addEventListener('touchmove', (e)=>{
+    nodes.handleMouseMove(getMousePos(canvas, e));
+});
+
 
 function extractProfileFromCanvas(ctx){
     let profile = [];
