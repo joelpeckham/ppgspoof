@@ -11,18 +11,13 @@ position: relative;
 }
 
 .center{
-    margin-top: 10px;
     display: flex;
     justify-content: center;
     position: relative;
 }
 #controlGrid{
     display: grid;
-    grid-auto-flow: column;
-    /* width:90vw */
-}
-.controlGridItem input{
-    width: 50px;
+    grid-template-columns:1fr,1fr;
 }
 #pulsar{
     background-color: var(--pulsingBG);
@@ -46,6 +41,7 @@ position: relative;
     --width:300px;
     width:var(--width);
     height:calc(var(--width)/2);
+    margin:20px;
     user-select: none;
     -moz-user-select: none;
     -khtml-user-select: none;

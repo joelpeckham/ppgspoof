@@ -62,14 +62,12 @@ class Nodes {
         this.divisions = divisions;
         this.ctx = ctx;
         this.dragging = -1;
+        this.drawProfile();
+        this.createLineAndLabelGrid(min,max,divisions);
         this.floater = document.getElementById("floatingLabel");
         this.floaterContent = document.getElementById("floatingLabelContent");
         this.profile = this.extractProfileFromCanvas(this.ctx,this.min,this.max);
         this.averageHR = 130;
-        this.progressLine = false;
-        this.progressLinePos = 300;
-        this.drawProfile();
-        this.createLineAndLabelGrid(min,max,divisions);
     }
 
     createLineAndLabelGrid(labelMin,labelMax,regions){
@@ -106,7 +104,7 @@ class Nodes {
         }
         this.averageHR = Math.round(sum/profile.length);
         this.drawProfile(true);
-
+        console.log(profile);
         return profile;
     }
     drawProfile(dots = true){
@@ -134,11 +132,6 @@ class Nodes {
         ctx.lineWidth = 1;
         let avgHRElement = document.getElementById("avgHR");
         avgHRElement.innerText = `${this.averageHR}`;
-        if (this.progressLine){
-            //Fill rectangle from 0 to progressLinePos on the x axis and the height of the canvas on the y axis;
-            ctx.fillStyle = "rgba(150,255,150,0.5)";
-            ctx.fillRect(0,0,this.progressLinePos,canvas.height);
-        }
     }
     //returns index of nearest node in nodes array. Retruns -1 if none found.
     nearestNode(pos){
@@ -154,13 +147,11 @@ class Nodes {
         return index;
     }
     handleMouseDown(pos){
-        if (!this.progressLine){
-            let nearest = this.nearestNode(pos);
-            if(nearest != -1){
-                this.dragging = nearest;
-            }
-            this.drawProfile();
+        let nearest = this.nearestNode(pos);
+        if(nearest != -1){
+            this.dragging = nearest;
         }
+        this.drawProfile();
     }
     handleMouseUp(pos){
         this.dragging = -1;
@@ -175,8 +166,8 @@ class Nodes {
             this.floater.style.visibility="visible";
             this.floater.style.top = pos.y/2+30+"px";
             this.floater.style.left = (this.nodes[this.dragging].clampedx/2) + "px";
-            this.drawProfile();
         }
+        this.drawProfile();
     }
   }
 
@@ -204,6 +195,7 @@ canvas.addEventListener('mousemove', (e)=>{
 });
 
 canvas.addEventListener('touchstart', (e)=>{
+    console.log(e);
     nodes.handleMouseDown(getMousePos(canvas, e));
 });
 window.addEventListener('touchend', (e)=>{
@@ -213,60 +205,3 @@ canvas.addEventListener('touchmove', (e)=>{
     nodes.handleMouseMove(getMousePos(canvas, e));
 });
 
-
-
-let mins = -1;
-let secs = -1;
-let totalTime = -1;
-let startTime = Date.now();
-let timeElapsed = 0;
-
-function pulse(){
-    // console.log("pulse");
-    let pulsar = document.getElementById("pulsar");
-    let newpulsar = pulsar.cloneNode(true);
-    newpulsar.className = "pulse";
-    let parent = pulsar.parentNode;
-    parent.appendChild(newpulsar);
-    parent.removeChild(pulsar);
-    // console.log(timeElapsed);
-    nodes.progressLinePos = map(timeElapsed,0,totalTime,0,canvas.width);
-    // console.log(nodes.progressLinePos);
-    nodes.drawProfile();
-}
-
-function startPulsing(){
-    console.log("What");
-    mins = parseInt(document.getElementById("min").value);
-    secs = parseInt(document.getElementById("sec").value);
-    totalTime = (mins*60+secs)*1000;
-    startTime = Date.now();
-    timeElapsed = 0;
-    let profile = nodes.profile;
-    let bpm = profile[0];
-    let bps = bpm/60;
-    let pulseInterval = 1000/bps;
-    nodes.progressLine= true;
-    let doPulse = ()=> {
-        timeElapsed = Date.now() - startTime;
-        if (timeElapsed < totalTime){
-            pulse();
-            bpm = profile[Math.floor(map(timeElapsed,0,totalTime,0,profile.length-1))];
-            bps = bpm/60;
-            pulseInterval = 1000/bps;
-            console.log(bpm);
-            setTimeout(()=>{
-                doPulse();
-            },pulseInterval);
-        }
-    };
-    doPulse();
-
-}
-function stopPulsing(){
-    totalTime = -1;
-    timeElapsed = 0;
-    nodes.progressLine = false;
-    nodes.progressLinePos = 0;
-    nodes.drawProfile();
-}

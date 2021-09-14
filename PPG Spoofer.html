@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)file:///Users/joel/Documents/Web/ppgspoof/index.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="tailwind.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="./PPG Spoofer_files/index.css">
+    <script src="./PPG Spoofer_files/curve.min.js"></script>
+    <script src="./PPG Spoofer_files/index.js" defer=""></script>
+    <title>PPG Spoofer</title>
+</head>
+<body>
+    <div id="hrmContainer" class="center">
+        <div id="pulsar"></div>
+    </div>
+    <div class="center">
+        <div id="controlGrid">
+            <div class="controlGridItem" id="startProgram"><button>Start</button></div>
+            <div class="controlGridItem" id="stopProgram"><button>Stop</button></div>
+        </div>
+    </div>
+    <div class="center">
+        <div id="canvasContainer">
+            <canvas id="profileCanvas" width="600" height="300"></canvas>
+            <div id="line-and-label-container" style="grid-template-rows: repeat(6, 1fr);"><div class="line"><p class="label">170-190</p></div><div class="line"><p class="label">150-170</p></div><div class="line"><p class="label">130-150</p></div><div class="line"><p class="label">110-130</p></div><div class="line"><p class="label">90-110</p></div><div class="line"><p class="label">70-90</p></div></div>
+            <div id="floatingLabel">
+                <p id="floatingLabelContent">180 BPM</p>
+            </div>
+        </div>
+    </div>
+    <div class="center">
+        <div id="average">Average heartrate: <span id="avgHR">130</span> BPM</div>
+    </div>
+
+</body></html>
