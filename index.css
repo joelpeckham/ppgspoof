@@ -1,6 +1,6 @@
 :root{
     --pulsingFG: #ff8585;
-    --pulsingBG: #000;
+    --pulsingBG: rgb(100, 46, 46);
 }
 html, body {
     overflow-x: hidden;

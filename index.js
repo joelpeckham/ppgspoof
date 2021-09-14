@@ -252,6 +252,7 @@ function startPulsing(){
             bpm = profile[Math.floor(map(timeElapsed,0,totalTime,0,profile.length-1))];
             bps = bpm/60;
             pulseInterval = 1000/bps;
+            console.log(bpm);
             setTimeout(()=>{
                 doPulse();
             },pulseInterval);
