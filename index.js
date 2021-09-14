@@ -235,8 +235,8 @@ function pulse(){
 
 function startPulsing(){
     console.log("What");
-    mins = parseInt(document.getElementById("min").value);
-    secs = parseInt(document.getElementById("sec").value);
+    mins = parseInt(document.getElementById("min").value) || 0;
+    secs = parseInt(document.getElementById("sec").value) || 0;
     totalTime = (mins*60+secs)*1000;
     startTime = Date.now();
     timeElapsed = 0;
