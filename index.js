@@ -171,9 +171,10 @@ class Nodes {
     handleMouseMove(pos){
         if(this.dragging != -1){
             this.nodes[this.dragging].y = pos.y;
-            this.floaterContent.innerText = `${Math.round(map(pos.y,0,canvas.height,190,70))} BPM`;
+            this.floaterContent.innerText = `${Math.round(map(this.nodes[this.dragging].y,0,canvas.height,190,70))} BPM`;
             this.floater.style.visibility="visible";
-            this.floater.style.top = pos.y/2+30+"px";
+            let bottom = (this.nodes[this.dragging].y < canvas.height/2) ? 1 : -1;
+            this.floater.style.top = this.nodes[this.dragging].y/2+(30*bottom)+"px";
             this.floater.style.left = (this.nodes[this.dragging].clampedx/2) + "px";
             this.drawProfile();
         }
@@ -222,16 +223,13 @@ let startTime = Date.now();
 let timeElapsed = 0;
 
 function pulse(){
-    // console.log("pulse");
     let pulsar = document.getElementById("pulsar");
     let newpulsar = pulsar.cloneNode(true);
     newpulsar.className = "pulse";
     let parent = pulsar.parentNode;
     parent.appendChild(newpulsar);
     parent.removeChild(pulsar);
-    // console.log(timeElapsed);
     nodes.progressLinePos = map(timeElapsed,0,totalTime,0,canvas.width);
-    // console.log(nodes.progressLinePos);
     nodes.drawProfile();
 }
 
@@ -254,7 +252,6 @@ function startPulsing(){
             bpm = profile[Math.floor(map(timeElapsed,0,totalTime,0,profile.length-1))];
             bps = bpm/60;
             pulseInterval = 1000/bps;
-            console.log(bpm);
             setTimeout(()=>{
                 doPulse();
             },pulseInterval);
